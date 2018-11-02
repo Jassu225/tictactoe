@@ -167,6 +167,8 @@ function blockPlayerStrike() {
 function getOccupancyCountinRowIColumnJ(i,j, playerSign) {
     let occupancyInRow = getOccupancyCountInRow(i, playerSign);
     let occupancyInColumn = getOccupancyCountInColumn(j, playerSign);
+    console.log("occupancy in row "+ i + " - " + occupancyInRow);
+    console.log("occupancy in column "+ j + " - " + occupancyInColumn);
     // remove repeatedly (tiwce) counted corner cell
     if(gameState[i][j][0] == playerSign)
         return occupancyInRow + occupancyInColumn - 1;
@@ -183,14 +185,15 @@ function checkIthRowJthColumn(i,j, i1, j1) {
         return [ i1, j1];
     }
     let occupancyCount = 0, min = 0, max = gridSize - 1;
-    occupancyCount = getOccupancyCountinRowIColumnJ(min, max, "P");
-    if(occupancyCount == gridSize - 1 && getOccupancyCountinRowIColumnJ(min, max, "C") == 0) { // i.e 2
-        console.log(i + " - " + j);
+    occupancyCount = getOccupancyCountinRowIColumnJ(i, j, "P");
+    console.log(i + " - " + j);
+    console.log(occupancyCount);
+    if(occupancyCount == gridSize - 1 && getOccupancyCountinRowIColumnJ(i, j, "C") == 0) { // i.e 2
         do {
             i1 = random(min, max);
             j1 = random(min, max);
             // console.log(i1 + " - " + j1);
-        } while((i1 != min && i1 != max) || (j1 != min && j1 != max) || (i1 == j && j1 == i) || gameState[i1][j1] != "");
+        } while((i1 != min && i1 != max) || (j1 != min && j1 != max) || (i1 == (max - i) && j1 == (max - j)) || gameState[i1][j1] != "");
         console.log("Came out");
     }
     return [ i1, j1];
@@ -243,6 +246,8 @@ let thinkNextMove = function(req) {
     
     // store user move 
     storeUserMove();
+
+    console.log(gameState);
 
     // ------------ Prediction Algorithm ------------------------
     if(isCenterFree()) { // check center
