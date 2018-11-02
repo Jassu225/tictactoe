@@ -1,4 +1,5 @@
 let time = -1;
+let thinkTime = 300; //ms
 
 function initListener(){
   canvas.addEventListener("click",playerMove);
@@ -68,7 +69,7 @@ function think(){
   ctx.clearRect(0,y3+5,canvas.width,canvas.height);
   ctx.fillText("Thinking",canvas.width/2,y3 + gap/8);
   if(moveSequence.length==9){
-    window.setTimeout(gameOver, 1000);
+    window.setTimeout(gameOver, thinkTime);
     return;
   }
   time = new Date().getTime();
@@ -78,8 +79,8 @@ function log(result){
   console.log(result);
 }
 function myMove(data, status){
-  if(new Date().getTime() - time < 1200) {
-    window.setTimeout(myMove.bind(null, data, status), 1200);
+  if(new Date().getTime() - time < thinkTime) {
+    window.setTimeout(myMove.bind(null, data, status), thinkTime);
     return;
   }
   console.log(data);
@@ -95,7 +96,7 @@ function myMove(data, status){
     if(moveSequence.length >=5){
       if(checkPlayerWin(cpu_first)){
         // show(6,8);
-        window.setTimeout(show.bind(null,6,8), 1000);
+        window.setTimeout(show.bind(null,6,8), thinkTime);
         return;
       }
     }
