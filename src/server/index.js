@@ -6,7 +6,6 @@ const util = require("util");
 const app = express();
 const config = require('./config');
 const routes = require('./routes');
-const constants = require('../constants');
 const nextMove = require('./nextMove');
 const port = process.env.PORT || config.port;
 
@@ -28,10 +27,11 @@ if (app.get('env') === 'production') {
     app.set('trust proxy', 1) // trust first proxy
     sessionCookie.cookie.secure = true // serve secure cookies
 }
+// console.log(__dirname);
   
 app.use(session(sessionCookie));
-app.use("/css/",express.static(path.join(constants.clientDir, "/css")));
-app.use("/js/",express.static(path.join(constants.clientDir, "/js")));
+app.use("/css/",express.static(path.join(__dirname, "../client","/css")));
+app.use("/js/",express.static(path.join(__dirname, "../client", "/js")));
 
 function resetGameState(req) {
     req.session.gameState = [["","",""],["","",""],["","",""]];
@@ -42,7 +42,7 @@ app.get(routes.root, function(req, res) {
     // init session cookie
     resetGameState(req);
     // send root
-    res.sendFile(path.join(constants.clientDir, "/html/index.html"));
+    res.sendFile(path.join(__dirname, "../client", "/html/index.html"));
 });
 
 // POST Methods
