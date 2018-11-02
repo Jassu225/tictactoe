@@ -6,7 +6,7 @@ const util = require("util");
 const app = express();
 const config = require('./config');
 const routes = require('./routes');
-const nextMove = require('./nextMove');
+const { thinkNextMove, resetVars } = require('./nextMove');
 const port = process.env.PORT || config.port;
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -52,15 +52,16 @@ app.post(routes.root, function (req, res) {
 
 app.post(routes.resetGameState, function(req, res) {
     resetGameState(req);
+    resetVars();
     res.send("Game state has been reset");
 })
 
-app.post("/getNextMove", function(req, res) {
+app.post(routes.getNextMove, function(req, res) {
     let data = req.body;
     console.log(util.inspect(data));
     console.log(util.inspect(req.session));
     res.send({
-        nextMove: nextMove(req)
+        nextMove: thinkNextMove(req)
     });
 });
 

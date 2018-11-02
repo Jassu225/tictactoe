@@ -1,6 +1,7 @@
 const routes = {
     root: '/',
-    resetGameState: '/resetGameState'
+    resetGameState: '/resetGameState',
+    getNextMove: "/getNextMove"
 }
 
 module.exports = routes;

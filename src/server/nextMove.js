@@ -8,6 +8,18 @@ let userMove = -1;
 let predictedMove = -1;
 let myPredictedMove = -1;
 
+function resetVars() {
+    center = 5;
+    myMove = -1;
+    gameState = null;
+    gridSize = 3;
+    myMoveCount = 0;
+    userMoveCount = 0;
+    userMove = -1;
+    predictedMove = -1;
+    myPredictedMove = -1;
+} 
+
 function isCenterFree() {
     return gameState[1][1] == "";
 }
@@ -23,6 +35,10 @@ function saveMove(playerSign, move, moveCount) {
             }
         }
     }
+}
+
+function isMyFirstMove() {
+    return myMoveCount == 0;
 }
 
 function saveMyMove() {
@@ -248,12 +264,12 @@ let thinkNextMove = function(req) {
         console.log("check corners");
         console.log(myMove);
     } else {
-        // random move - take corner only
+        // random move - take corner only if its a first Move
         let i = -1, j = -1, min = 0, max = gridSize - 1;
         do {
             i = random(min, max);
             j = random(min, max);
-        } while(gameState[i][j] != "" || (i != min && i != max) || (j != min && j != max));
+        } while(gameState[i][j] != "" || (isMyFirstMove() && ((i != min && i != max) || (j != min && j != max))) );
         myMove = i*gridSize + j + 1;
         console.log("random");
         console.log(myMove);
@@ -269,4 +285,4 @@ let thinkNextMove = function(req) {
     return myMove;
 }
 
-module.exports = thinkNextMove;
+module.exports = {thinkNextMove, resetVars};
