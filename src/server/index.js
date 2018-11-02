@@ -8,6 +8,7 @@ const config = require('./config');
 const routes = require('./routes');
 const constants = require('../constants');
 const nextMove = require('./nextMove');
+const port = process.env.PORT || config.port;
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -63,4 +64,4 @@ app.post("/getNextMove", function(req, res) {
     });
 });
 
-app.listen(config.port, () => console.log(`Example app listening on port ${config.port}!`));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
