@@ -158,7 +158,7 @@ function getOccupancyCountinRowIColumnJ(i,j, playerSign) {
 }
 
 function random(min,max) {
-    return Math.floor((Math.random() * max) + min);
+    return Math.floor((Math.random() * (max + 1)) + min);
 }
 
 function checkIthRowJthColumn(i,j, i1, j1) {
@@ -169,10 +169,13 @@ function checkIthRowJthColumn(i,j, i1, j1) {
     let occupancyCount = 0, min = 0, max = gridSize - 1;
     occupancyCount = getOccupancyCountinRowIColumnJ(min, max, "P");
     if(occupancyCount == gridSize - 1 && getOccupancyCountinRowIColumnJ(min, max, "C") == 0) { // i.e 2
+        console.log(i + " - " + j);
         do {
             i1 = random(min, max);
             j1 = random(min, max);
-        } while((i1 != min && i1 != max) || (j1 != min && j1 != max) || (i1 == i && j1 == j));
+            // console.log(i1 + " - " + j1);
+        } while((i1 != min && i1 != max) || (j1 != min && j1 != max) || (i1 == j && j1 == i) || gameState[i1][j1] != "");
+        console.log("Came out");
     }
     return [ i1, j1];
 }
