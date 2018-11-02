@@ -248,12 +248,12 @@ let thinkNextMove = function(req) {
         console.log("check corners");
         console.log(myMove);
     } else {
-        // random move
+        // random move - take corner only
         let i = -1, j = -1, min = 0, max = gridSize - 1;
         do {
             i = random(min, max);
             j = random(min, max);
-        } while(gameState[i][j] != "");
+        } while(gameState[i][j] != "" || (i != min && i != max) || (j != min && j != max));
         myMove = i*gridSize + j + 1;
         console.log("random");
         console.log(myMove);
