@@ -4,7 +4,7 @@ function askAgain(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillText("Click anywhere",canvas.width/2,canvas.height/2);
   ctx.fillText("on canvas to play again",canvas.width/2,canvas.height/2+line_space);
-  request("/resetGameState", () => {
+  request("/resetGameState", function() {
     console.log("Game state reset successful");
   });
 }

@@ -21,8 +21,9 @@ function playerMove(e){
         filled[center.ind-1] = true;
         if(moveSequence.length >=5){
           if(checkPlayerWin(player_first)){
-             show(3,5);
-             request("https://stream-me.000webhostapp.com/insertSequence.php",log);
+            //  show(3,5);
+             window.setTimeout(show.bind(null,3,5), thinkTime);
+            //  request("https://stream-me.000webhostapp.com/insertSequence.php",log);
              return;
           }
         }
@@ -49,7 +50,7 @@ function fillCircle(x,y,r){
 function request(url,callback){
   //$.post(url,{sequence: moveSequence},callback);
   $.ajax({
-      url,
+      url: url,
       method: "POST",
       data: {sequence: moveSequence},
       dataType: "json",

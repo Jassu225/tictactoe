@@ -16,7 +16,7 @@ function showText(){
   requestID = window.requestAnimationFrame(showText);
   opacity += increment;
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = `rgba(255,255,255,${opacity*0.01})`;
+  ctx.fillStyle = 'rgba(255,255,255,'+ opacity*0.01 + ')';
   ctx.textAlign = "center";
   ctx.fillText(text[i],canvas.width/2,canvas.height/2);
   if(opacity == 100){
