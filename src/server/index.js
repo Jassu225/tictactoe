@@ -58,8 +58,8 @@ app.post(routes.resetGameState, function(req, res) {
 
 app.post(routes.getNextMove, function(req, res) {
     let data = req.body;
-    console.log(util.inspect(data));
-    console.log(util.inspect(req.session));
+    // console.log(util.inspect(data));
+    // console.log(util.inspect(req.session));
     res.send({
         nextMove: thinkNextMove(req)
     });

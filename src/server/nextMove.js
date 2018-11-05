@@ -1,12 +1,13 @@
-let center = 5;
 let myMove = -1;
 let gameState = null;
 let gridSize = 3;
+let center = Math.floor(gridSize / 2)*gridSize + Math.floor(gridSize / 2) + 1;
 let myMoveCount = 0;
 let userMoveCount = 0;
 let userMove = -1;
 let predictedMove = -1;
-let myPredictedMove = -1;
+let min = 0, max = gridSize - 1;
+let sequence = '';
 
 function resetVars() {
     center = 5;
@@ -176,6 +177,7 @@ function getOccupancyCountinRowIColumnJ(i,j, playerSign) {
 }
 
 function random(min,max) {
+    // selects a number from [min, max]
     return Math.floor((Math.random() * (max + 1)) + min);
 }
 
@@ -238,36 +240,109 @@ function checkCorners() {
     return false;
 }
 
+function getBoardCornerPositions() {
+    let min = 0, max = gridSize - 1;
+    let cornerPositions = [];
+    cornerPositions.push(min*gridSize + min + 1);
+    cornerPositions.push(min*gridSize + max + 1);
+    cornerPositions.push(max*gridSize + min + 1);
+    cornerPositions.push(max*gridSize + max + 1);
+    return cornerPositions;
+}
+
+function isUserFirstMoveAndCorner() {
+    if(userMoveCount == 1) {
+        let cornerPositions = getBoardCornerPositions();
+        if(cornerPositions.indexOf(userMove) != -1)
+            return true;
+    }
+    return false;
+}
+
+function AvoidOtherDiagonalPositions() {
+    let position = -1;
+    if(userMove == min*gridSize + min + 1 || userMove == max*gridSize + max + 1) {
+        // user made move in principal diagonal
+        do {
+            position = random(1, gridSize*gridSize);
+        } while(position == userMove || position == center || position == min*gridSize + max + 1 || position == max*gridSize + min + 1);
+    } else {
+        // user made move in non-principal diagonal
+        do {
+            position = random(1, gridSize*gridSize);
+        } while(position == userMove || position == center || position == min*gridSize + min + 1 || position == max*gridSize + max + 1);
+    }
+
+    predictedMove = position;
+}
+
+function isUserSecondMove() {
+    return userMoveCount == 2;
+}
+
+function areMovesInOppositeCorners() {
+    let min = 0, max = gridSize - 1;
+    let cornerPositions = [];
+    cornerPositions.push(min*gridSize + min + 1);
+    cornerPositions.push(min*gridSize + max + 1);
+    cornerPositions.push(max*gridSize + max + 1);
+    cornerPositions.push(max*gridSize + min + 1);
+    let move1 = sequence[0];
+    let move2 = sequence[2];
+    return (
+        (move1 == cornerPositions[0] && move2 == cornerPositions[2]) ||
+        (move1 == cornerPositions[1] && move2 == cornerPositions[3]) ||
+        (move1 == cornerPositions[2] && move2 == cornerPositions[0]) ||
+        (move1 == cornerPositions[3] && move2 == cornerPositions[1])
+    );
+}
+
+function chooseMidPositions() {
+    let midPositions = [];
+    let midPoint = Math.floor(gridSize/2);
+    for(let i = 0; i < midPoint; i++) {
+        midPositions.push(i*gridSize + midPoint + 1);
+        midPositions.push((midPoint + 1)*gridSize - i); // midPoint*gridSize + gridSize - 1 - i + 1
+        midPositions.push((gridSize - 1 - i)*gridSize + midPoint + 1);
+        midPositions.push(midPoint*gridSize + i + 1);
+    }
+    let midPositionsIndex = random(0, midPositions.length - 1);
+    predictedMove = midPositions[midPositionsIndex];
+}
+
 let thinkNextMove = function(req) {
     gameState = req.session.gameState;
-    let sequence = req.body.sequence;
+    sequence = req.body.sequence;
     userMove = parseInt(sequence.substr(-1)); //  last number is user move
-    console.log(sequence);
+    // console.log(sequence);
     
     // store user move 
     storeUserMove();
 
-    console.log(gameState);
+    // console.log(gameState);
 
     // ------------ Prediction Algorithm ------------------------
-    if(isCenterFree()) { // check center
+    if(isUserSecondMove() && areMovesInOppositeCorners()) {
+        chooseMidPositions();
+        myMove = predictedMove;
+    } else if(isCenterFree()) { // check center
         myMove = center;
     } else if(tryStrike()) {
         myMove = predictedMove;
-        console.log("try strike");
-        console.log(myMove);
+        // console.log("try strike");
+        // console.log(myMove);
     } else if(blockPlayerStrike()) {
         myMove = predictedMove;
-        console.log("blockPlayerStrike");
-        console.log(myMove);
+        // console.log("blockPlayerStrike");
+        // console.log(myMove);
     } else if(borderCheck()) {
         myMove = predictedMove;
-        console.log("bordercheck");
-        console.log(myMove);
+        // console.log("bordercheck");
+        // console.log(myMove);
     } else if(checkCorners()) {
         myMove = predictedMove;
-        console.log("check corners");
-        console.log(myMove);
+        // console.log("check corners");
+        // console.log(myMove);
     } else {
         // random move - take corner only if its a first Move
         let i = -1, j = -1, min = 0, max = gridSize - 1;
