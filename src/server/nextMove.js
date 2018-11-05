@@ -116,7 +116,7 @@ function possibilityOfStriking(playerSign) {
         occupancyInColumn = getOccupancyCountInColumn(j, playerSign);
         if(occupancyInColumn == gridSize - 1) {
             predictedMove = getEmptyCellPositionInColumn(j);
-            console.log(predictedMove);
+            // console.log(predictedMove);
             // strike case
             if(predictedMove != -1)
                 return true;
@@ -134,7 +134,7 @@ function possibilityOfStriking(playerSign) {
             predictedMove = i*gridSize + j + 1;
         }
 
-        let i1 = gridSize - 1 - i;
+        let i1 = i;
         let j1 = gridSize - 1 - j;
         if(gameState[i1][j1][0] == playerSign)
             occupancyInRow_1++;
@@ -168,8 +168,8 @@ function blockPlayerStrike() {
 function getOccupancyCountinRowIColumnJ(i,j, playerSign) {
     let occupancyInRow = getOccupancyCountInRow(i, playerSign);
     let occupancyInColumn = getOccupancyCountInColumn(j, playerSign);
-    console.log("occupancy in row "+ i + " - " + occupancyInRow);
-    console.log("occupancy in column "+ j + " - " + occupancyInColumn);
+    // console.log("occupancy in row "+ i + " - " + occupancyInRow);
+    // console.log("occupancy in column "+ j + " - " + occupancyInColumn);
     // remove repeatedly (tiwce) counted corner cell
     if(gameState[i][j][0] == playerSign)
         return occupancyInRow + occupancyInColumn - 1;
@@ -188,15 +188,15 @@ function checkIthRowJthColumn(i,j, i1, j1) {
     }
     let occupancyCount = 0, min = 0, max = gridSize - 1;
     occupancyCount = getOccupancyCountinRowIColumnJ(i, j, "P");
-    console.log(i + " - " + j);
-    console.log(occupancyCount);
+    // console.log(i + " - " + j);
+    // console.log(occupancyCount);
     if(occupancyCount == gridSize - 1 && getOccupancyCountinRowIColumnJ(i, j, "C") == 0) { // i.e 2
         do {
             i1 = random(min, max);
             j1 = random(min, max);
             // console.log(i1 + " - " + j1);
         } while((i1 != min && i1 != max) || (j1 != min && j1 != max) || (i1 == (max - i) && j1 == (max - j)) || gameState[i1][j1] != "");
-        console.log("Came out");
+        // console.log("Came out");
     }
     return [ i1, j1];
 }
@@ -351,8 +351,8 @@ let thinkNextMove = function(req) {
             j = random(min, max);
         } while(gameState[i][j] != "" || (isMyFirstMove() && ((i != min && i != max) || (j != min && j != max))) );
         myMove = i*gridSize + j + 1;
-        console.log("random");
-        console.log(myMove);
+        // console.log("random");
+        // console.log(myMove);
     }
     // ------------END Prediction Algorithm ------------------------
 
