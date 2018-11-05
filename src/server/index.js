@@ -14,33 +14,33 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-let sessionCookie = {
-    cookie: {
-        secure: false
-    },
-    secret: "secret key",
-    resave: true,
-    saveUninitialized: true
-}
+// let sessionCookie = {
+//     cookie: {
+//         secure: false
+//     },
+//     secret: "secret key",
+//     resave: true,
+//     saveUninitialized: true
+// }
 
-if (app.get('env') === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
-    sessionCookie.cookie.secure = true // serve secure cookies
-}
+// if (app.get('env') === 'production') {
+//     app.set('trust proxy', 1) // trust first proxy
+//     sessionCookie.cookie.secure = true // serve secure cookies
+// }
 // console.log(__dirname);
   
-app.use(session(sessionCookie));
+// app.use(session(sessionCookie));
 app.use("/css/",express.static(path.join(__dirname, "../client","/css")));
 app.use("/js/",express.static(path.join(__dirname, "../client", "/js")));
 
-function resetGameState(req) {
-    req.session.gameState = [["","",""],["","",""],["","",""]];
-    req.session.save();
-}
+// function resetGameState(req) {
+//     req.session.gameState = [["","",""],["","",""],["","",""]];
+//     req.session.save();
+// }
 // GET Methods
 app.get(routes.root, function(req, res) { 
     // init session cookie
-    resetGameState(req);
+    // resetGameState(req);
     // send root
     res.sendFile(path.join(__dirname, "../client", "/html/index.html"));
 });
@@ -51,7 +51,7 @@ app.post(routes.root, function (req, res) {
 });
 
 app.post(routes.resetGameState, function(req, res) {
-    resetGameState(req);
+    // resetGameState(req);
     resetVars();
     res.send("Game state has been reset");
 })

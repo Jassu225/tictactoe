@@ -310,9 +310,41 @@ function chooseMidPositions() {
     predictedMove = midPositions[midPositionsIndex];
 }
 
+function prepareGameState() {
+    gameState = [];
+    let player = [
+        {
+            sign: "P",
+            moveCount: 0
+        },
+        {
+            sign: "C",
+            moveCount: 0
+        }
+    ];
+    let seq = sequence.split('');
+    let position = -1;
+    let index = -1;
+    // console.log(seq);
+    for(let i = 0; i < gridSize; i++) {
+        gameState.push([]);
+        for(let j = 0; j < gridSize; j++) {
+            gameState[i].push("");
+            position = i*gridSize + j + 1;
+            index = seq.indexOf('' + position);
+            // console.log(index);
+            if(index != -1) {
+                gameState[i][j] =  player[index % 2].sign + "-" + ++player[index % 2].moveCount;
+            }
+        }
+    }
+    // console.log(gameState);
+}
+
 let thinkNextMove = function(req) {
-    gameState = req.session.gameState;
+    // gameState = req.session.gameState;
     sequence = req.body.sequence;
+    prepareGameState();
     userMove = parseInt(sequence.substr(-1)); //  last number is user move
     // console.log(sequence);
     
@@ -359,8 +391,8 @@ let thinkNextMove = function(req) {
     saveMyMove();
 
     // save game state
-    req.session.gameState = gameState;
-    req.session.save();
+    // req.session.gameState = gameState;
+    // req.session.save();
 
     return myMove;
 }
