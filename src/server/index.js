@@ -1,7 +1,7 @@
 const path = require("path");
 const express = require('express');
 const bodyParser = require('body-parser');
-// const session = require('express-session');
+const session = require('express-session');
 // const util = require("util");
 const app = express();
 const config = require('./config');
@@ -16,14 +16,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-// let sessionCookie = {
-//     cookie: {
-//         secure: false
-//     },
-//     secret: "secret key",
-//     resave: true,
-//     saveUninitialized: true
-// }
+let sessionCookie = {
+    cookie: {
+        secure: false
+    },
+    secret: "secret key",
+    resave: true,
+    saveUninitialized: true
+}
 
 // if (app.get('env') === 'production') {
 //     app.set('trust proxy', 1) // trust first proxy
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 // }
 // console.log(__dirname);
   
-// app.use(session(sessionCookie));
+app.use(session(sessionCookie));
 app.use("/css/",express.static(path.join(__dirname, "../client","/css")));
 app.use("/js/",express.static(path.join(__dirname, "../client", "/js")));
 
