@@ -21,4 +21,4 @@ const Authentication = function(req, res, next) {
     next();
 }
 
-export default Authentication;
+module.exports = Authentication;
