@@ -10,12 +10,6 @@ const Authentication = require("./authentication");
 const { thinkNextMove, resetVars } = require('./nextMove');
 const port = process.env.PORT || config.port;
 
-app.use(Authentication);
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
-
 let sessionCookie = {
     cookie: {
         secure: false
@@ -32,6 +26,11 @@ let sessionCookie = {
 // console.log(__dirname);
   
 app.use(session(sessionCookie));
+app.use(Authentication);
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 app.use("/css/",express.static(path.join(__dirname, "../client","/css")));
 app.use("/js/",express.static(path.join(__dirname, "../client", "/js")));
 
