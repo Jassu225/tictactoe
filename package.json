@@ -19,7 +19,9 @@
   "homepage": "https://github.com/Jassu225/tictactoe#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
-    "express-session": "^1.15.6"
+    "express-session": "^1.15.6",
+    "nedb-session-store": "^1.1.2"
   }
 }

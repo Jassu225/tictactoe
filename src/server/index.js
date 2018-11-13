@@ -3,20 +3,26 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 // const util = require("util");
+const NedbStore = require('nedb-session-store')(session);
+const cookieParser = require('cookie-parser');
 const app = express();
 const config = require('./config');
 const routes = require('./routes');
 const Authentication = require("./authentication");
 const { thinkNextMove, resetVars } = require('./nextMove');
 const port = process.env.PORT || config.port;
+const sharedSecretKey = "secret key";
 
 let sessionCookie = {
     cookie: {
         secure: false
     },
-    secret: "secret key",
+    secret: sharedSecretKey,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new NedbStore({
+        filename: path.join(__dirname, "../../data/dataStore.db")
+    })
 }
 
 // if (app.get('env') === 'production') {
@@ -24,7 +30,7 @@ let sessionCookie = {
 //     sessionCookie.cookie.secure = true // serve secure cookies
 // }
 // console.log(__dirname);
-  
+app.use(cookieParser(sharedSecretKey));
 app.use(session(sessionCookie));
 app.use(Authentication);
 app.use( bodyParser.json() );       // to support JSON-encoded bodies

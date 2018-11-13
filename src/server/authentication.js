@@ -2,7 +2,7 @@ const urls = {
     "SSOurl": "https://node-sso.herokuapp.com"
 };
 
-// ------------------ STEP - 1 ------------------------------------
+// ------------------ STEP - 1 (For SSO) ------------------------------------
 // The user accesses the protected resource of system - "sso-consumer". 
 // "sso-consumer" finds that the user is not logged in, jumps to the "sso-server",
 // using his own address as a parameter.
