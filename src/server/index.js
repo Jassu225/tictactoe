@@ -1,14 +1,16 @@
 const path = require("path");
 const express = require('express');
 const bodyParser = require('body-parser');
-const session = require('express-session');
-const util = require("util");
+// const session = require('express-session');
+// const util = require("util");
 const app = express();
 const config = require('./config');
 const routes = require('./routes');
+const Authentication = require("./authentication");
 const { thinkNextMove, resetVars } = require('./nextMove');
 const port = process.env.PORT || config.port;
 
+app.use(Authentication);
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
