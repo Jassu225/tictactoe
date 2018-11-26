@@ -1,5 +1,6 @@
 const urls = {
-    "SSOurl": "https://node-sso.herokuapp.com"
+    "SSOurl": "https://node-sso.herokuapp.com",
+    "devSSOurl": "http://localhost:64444"
 };
 
 // ------------------ STEP - 1 (For SSO) ------------------------------------
@@ -16,7 +17,10 @@ const Authentication = function(req, res, next) {
     
     const redirectURL = `${req.protocol}://${req.headers.host}${req.path}`;
     if(req.session.user == null) {
-        return res.redirect(`${urls.SSOurl}?callbackURL=${redirectURL}`);
+        if(process.env.ENVIRONMENT == "DEVELOPMENT") {
+            return res.redirect(`${urls.devSSOurl}?callbackURL=${redirectURL}`);
+        } else
+            return res.redirect(`${urls.SSOurl}?callbackURL=${redirectURL}`);
     }
     next();
 }

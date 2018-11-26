@@ -11,7 +11,7 @@ const routes = require('./routes');
 const Authentication = require("./authentication");
 const { thinkNextMove, resetVars } = require('./nextMove');
 const port = process.env.PORT || config.port;
-const sharedSecretKey = "secret key";
+const sharedSecretKey = "3d8700d44aeeb29892a6a30c5ee78e08";
 
 let sessionCookie = {
     cookie: {
@@ -32,7 +32,7 @@ let sessionCookie = {
 // console.log(__dirname);
 app.use(cookieParser(sharedSecretKey));
 app.use(session(sessionCookie));
-app.use(Authentication);
+// app.use(Authentication);
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
